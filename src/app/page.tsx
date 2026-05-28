@@ -84,27 +84,59 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-black text-white p-6">
-      <div className="max-w-md mx-auto">
-        <h1 className="text-4xl font-bold">
-          Notes App
-        </h1>
+    <main className="min-h-screen bg-black text-white overflow-hidden relative">
 
-        <p className="mt-2 text-gray-400">
-          Capture your thoughts beautifully.
-        </p>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#27272a,transparent_40%)]" />
 
-        <div className="mt-8 space-y-4">
-          {notes.map((note, index) => (
-            <NoteCard
-              key={index}
-              title={note.title}
-              content={note.content}
-              onDelete={() => deleteNote(index)}
-              onEdit={() => openEditModal(index)}
-            />
-          ))}
+      <div className="relative z-10 max-w-2xl mx-auto px-6 py-14">
+
+        <div className="mb-12">
+
+          <p className="text-sm uppercase tracking-[0.3em] text-zinc-500">
+            Personal Workspace
+          </p>
+
+          <h1 className="text-6xl font-semibold tracking-tight mt-4">
+            Notes
+          </h1>
+
+          <p className="text-zinc-400 text-lg mt-4 max-w-md leading-relaxed">
+            Capture ideas, thoughts, reflections,
+            and important moments beautifully.
+          </p>
+
         </div>
+
+        {notes.length === 0 ? (
+          <div className="border border-dashed border-zinc-800 rounded-[32px] p-14 text-center bg-zinc-950/40 backdrop-blur-xl">
+
+            <div className="text-6xl mb-6">
+              ✨
+            </div>
+
+            <h2 className="text-2xl font-semibold">
+              No notes yet
+            </h2>
+
+            <p className="text-zinc-500 mt-3">
+              Start capturing your ideas and thoughts.
+            </p>
+
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {notes.map((note, index) => (
+              <NoteCard
+                key={index}
+                title={note.title}
+                content={note.content}
+                onDelete={() => deleteNote(index)}
+                onEdit={() => openEditModal(index)}
+              />
+            ))}
+          </div>
+        )}
+
       </div>
 
       <AddButton
