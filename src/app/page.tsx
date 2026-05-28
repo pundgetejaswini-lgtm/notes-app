@@ -48,6 +48,14 @@ export default function Home() {
     setIsModalOpen(false);
   };
 
+  const deleteNote = (indexToDelete: number) => {
+    const updatedNotes = notes.filter(
+      (_, index) => index !== indexToDelete
+    );
+
+    setNotes(updatedNotes);
+  };
+
   if (!isLoaded) {
     return null;
   }
@@ -69,6 +77,7 @@ export default function Home() {
               key={index}
               title={note.title}
               content={note.content}
+              onDelete={() => deleteNote(index)}
             />
           ))}
         </div>

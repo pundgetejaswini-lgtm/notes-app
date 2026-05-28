@@ -5,11 +5,13 @@ import jsPDF from "jspdf";
 type NoteCardProps = {
   title: string;
   content: string;
+  onDelete: () => void;
 };
 
 export default function NoteCard({
   title,
   content,
+  onDelete,
 }: NoteCardProps) {
 
   const downloadPDF = () => {
@@ -26,13 +28,24 @@ export default function NoteCard({
 
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
-      <h2 className="text-2xl font-semibold text-white">
-        {title}
-      </h2>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-semibold text-white">
+            {title}
+          </h2>
 
-      <p className="text-zinc-400 mt-3">
-        {content}
-      </p>
+          <p className="text-zinc-400 mt-3">
+            {content}
+          </p>
+        </div>
+
+        <button
+          onClick={onDelete}
+          className="text-red-400 text-sm"
+        >
+          Delete
+        </button>
+      </div>
 
       <button
         onClick={downloadPDF}
