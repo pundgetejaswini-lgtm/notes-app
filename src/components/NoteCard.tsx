@@ -6,12 +6,14 @@ type NoteCardProps = {
   title: string;
   content: string;
   onDelete: () => void;
+  onEdit: () => void;
 };
 
 export default function NoteCard({
   title,
   content,
   onDelete,
+  onEdit,
 }: NoteCardProps) {
 
   const downloadPDF = () => {
@@ -39,12 +41,21 @@ export default function NoteCard({
           </p>
         </div>
 
-        <button
-          onClick={onDelete}
-          className="text-red-400 text-sm"
-        >
-          Delete
-        </button>
+        <div className="flex flex-col gap-2">
+          <button
+            onClick={onEdit}
+            className="text-blue-400 text-sm"
+          >
+            Edit
+          </button>
+
+          <button
+            onClick={onDelete}
+            className="text-red-400 text-sm"
+          >
+            Delete
+          </button>
+        </div>
       </div>
 
       <button

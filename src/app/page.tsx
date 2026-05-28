@@ -15,6 +15,8 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+
   useEffect(() => {
     const savedNotes = localStorage.getItem("notes");
 
@@ -35,15 +37,31 @@ export default function Home() {
   }, [notes, isLoaded]);
 
   const addNote = (title: string, content: string) => {
-    const newNote = {
-      title,
-      content,
-    };
 
-    setNotes((prevNotes) => [
-      newNote,
-      ...prevNotes,
-    ]);
+    if (editingIndex !== null) {
+      const updatedNotes = [...notes];
+
+      updatedNotes[editingIndex] = {
+        title,
+        content,
+      };
+
+      setNotes(updatedNotes);
+
+      setEditingIndex(null);
+
+    } else {
+
+      const newNote = {
+        title,
+        content,
+      };
+
+      setNotes((prevNotes) => [
+        newNote,
+        ...prevNotes,
+      ]);
+    }
 
     setIsModalOpen(false);
   };
@@ -54,6 +72,11 @@ export default function Home() {
     );
 
     setNotes(updatedNotes);
+  };
+
+  const openEditModal = (index: number) => {
+    setEditingIndex(index);
+    setIsModalOpen(true);
   };
 
   if (!isLoaded) {
@@ -78,18 +101,27 @@ export default function Home() {
               title={note.title}
               content={note.content}
               onDelete={() => deleteNote(index)}
+              onEdit={() => openEditModal(index)}
             />
           ))}
         </div>
       </div>
 
       <AddButton
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => {
+          setEditingIndex(null);
+          setIsModalOpen(true);
+        }}
       />
 
       <NoteModal
         isOpen={isModalOpen}
         onAddNote={addNote}
+        editingNote={
+          editingIndex !== null
+            ? notes[editingIndex]
+            : null
+        }
       />
     </main>
   );
