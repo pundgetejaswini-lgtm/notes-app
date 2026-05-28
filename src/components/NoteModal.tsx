@@ -1,18 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type NoteModalProps = {
   isOpen: boolean;
   onAddNote: (title: string, content: string) => void;
+  editingNote: {
+    title: string;
+    content: string;
+  } | null;
 };
 
 export default function NoteModal({
   isOpen,
   onAddNote,
+  editingNote,
 }: NoteModalProps) {
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+
+  useEffect(() => {
+    if (editingNote) {
+      setTitle(editingNote.title);
+      setContent(editingNote.content);
+    } else {
+      setTitle("");
+      setContent("");
+    }
+  }, [editingNote]);
 
   if (!isOpen) return null;
 
@@ -20,7 +36,7 @@ export default function NoteModal({
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-6">
       <div className="bg-zinc-900 w-full max-w-md rounded-3xl p-6">
         <h2 className="text-2xl font-bold text-white">
-          Create Note
+          {editingNote ? "Edit Note" : "Create Note"}
         </h2>
 
         <input
@@ -44,7 +60,7 @@ export default function NoteModal({
           }}
           className="w-full mt-6 bg-white text-black rounded-xl p-4 font-semibold"
         >
-          Save Note
+          {editingNote ? "Update Note" : "Save Note"}
         </button>
       </div>
     </div>
